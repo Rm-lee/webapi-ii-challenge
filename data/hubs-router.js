@@ -20,7 +20,7 @@ router.get("/:id", (req,res) => {
  dbs.findById(id)
  
  .then(post => {
-  if(post){
+  if(post.length){  
   res.status(200).json(post)
   }
   else{
@@ -36,6 +36,31 @@ router.get("/:id", (req,res) => {
  })
 
 })
+
+router.get('/:id/comments', (req,res) => {
+ const id = req.params.id
+ dbs.findById(id)
+  .then(post => {
+   if (post.length){
+    dbs.findPostComments(id)
+    .then(comments => {
+     res.status(200).json(comments)
+    })
+    .catch(error => {
+     res.status(500).json({
+      error: "The comments information could not be retrieved"
+     })
+    })
+   }
+   else{
+    res.status(404).json({
+     message: "The post with the specified ID does not exist"
+    })
+   }
+  })
+ 
+})
+
 router.post("/", (req, res) => {
   const newBlog = req.body;
   if (newBlog.title && newBlog.contents) {
