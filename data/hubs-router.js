@@ -2,6 +2,7 @@ const express = require("express");
 const dbs = require("./db");
 const router = express.Router();
 
+//GET /api/posts
 router.get("/", (req, res) => {
   dbs
     .find()
@@ -15,6 +16,7 @@ router.get("/", (req, res) => {
     });
 });
 
+//GET /api/posts/:id
 router.get("/:id", (req, res) => {
   const id = req.params.id;
   dbs
@@ -36,6 +38,7 @@ router.get("/:id", (req, res) => {
     });
 });
 
+// GET /api/posts/:id/comments
 router.get("/:id/comments", (req, res) => {
   const id = req.params.id;
   dbs.findById(id).then(post => {
@@ -58,6 +61,7 @@ router.get("/:id/comments", (req, res) => {
   });
 });
 
+//POST /api/posts
 router.post("/", (req, res) => {
   const newBlog = req.body;
   if (newBlog.title && newBlog.contents) {
@@ -83,6 +87,7 @@ router.post("/", (req, res) => {
   }
 });
 
+//post /api/posts/:id/comments
 router.post("/:id/comments", (req, res) => {
   const comment = req.body;
   if (comment.text) {
@@ -112,6 +117,7 @@ router.post("/:id/comments", (req, res) => {
   }
 });
 
+//DELETE /api/posts/:id
 router.delete("/:id", (req, res) => {
   const id = req.params.id;
   dbs.findById(id).then(post => {
@@ -134,6 +140,7 @@ router.delete("/:id", (req, res) => {
   });
 });
 
+//PUT /api/posts/:id
 router.put("/:id", (req, res) => {
   const changes = req.body;
   const id = req.params.id;
